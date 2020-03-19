@@ -7,8 +7,10 @@ import java.util.List;
 public class NeuralNetwork {
 
     private final Matrix[] weights, bias;
+    private final double lr;
 
     public NeuralNetwork(int input, int hidden, int output) {
+        this.lr = .25;
         this.weights = new Matrix[2];
         this.bias = new Matrix[2];
 
@@ -23,35 +25,52 @@ public class NeuralNetwork {
         this.bias[1].randomize();
     }
 
+    public void train(double[] inputs, double[] targets) {
+        // Convert the targets to a matrix opject for later
+        Matrix target = Matrix.toMatrix(targets);
+        // Feed the inputs into the network using the first weights matrix
+        Matrix input = Matrix.toMatrix(inputs);
+        Matrix hidden = Matrix.multiply(this.weights[0], input);
+        hidden.add(this.bias[0]);
+        activate(hidden);
+
+        // Feed the activated hidden layer outputs forward using the second weights matrix
+        Matrix output = Matrix.multiply(this.weights[1], hidden);
+        output.add(this.bias[1]);
+        activate(output);
+
+        // Calculate the error of the guessed output
+        Matrix outputErrors = Matrix.subtract(target, output);
+
+        // Calculate the error of the hidden layer nodes
+        Matrix hiddenErrors = Matrix.multiply(this.weights[1].transpose(), outputErrors);
+
+        // Tune the weights in the last layer
+        Matrix gradient = Matrix.derivative(output);
+        Matrix.multiplyElements(gradient, outputErrors);
+        gradient.multiply(this.lr);
+        Matrix weight1Deltas = Matrix.multiply(gradient, hidden.transpose());
+        this.weights[1].add(weight1Deltas);
+
+
+        // tune the weights in the first layer
+        Matrix hiddenGradient =  Matrix.derivative(hidden);
+        Matrix.multiplyElements(hiddenGradient, hiddenErrors);
+        hiddenGradient.multiply(this.lr);
+        Matrix weight0Deltas = Matrix.multiply(hiddenGradient, input.transpose());
+        this.weights[0].add(weight0Deltas);
+    }
+
     public double[] guess(double[] inputs) {
         Matrix input = Matrix.toMatrix(inputs);
         Matrix hidden = Matrix.multiply(this.weights[0], input);
-        hidden.add(bias[0]);
+        hidden.add(this.bias[0]);
         activate(hidden);
         Matrix output = Matrix.multiply(this.weights[1], hidden);
-        output.add(bias[1]);
+        output.add(this.bias[1]);
         activate(output);
 
         return Matrix.toArray(output);
-    }
-
-
-    public void train(double[] inputs, double[] targets) {
-        // Feed the inputs forward to calculate the errors
-        Matrix guess = Matrix.toMatrix(this.guess(inputs));
-        Matrix target = Matrix.toMatrix(targets);
-        Matrix outputError = Matrix.subtract(target, guess);
-
-
-        Matrix tweights = this.weights[1].transpose();
-
-
-        // Calculate the error of the hidden layer nodes
-        Matrix hiddenErrors = Matrix.multiply(tweights, outputError);
-
-        Matrix.print(hiddenErrors);
-
-
     }
 
     public Matrix activate(Matrix sums) {

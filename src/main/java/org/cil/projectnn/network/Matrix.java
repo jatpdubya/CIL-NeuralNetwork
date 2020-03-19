@@ -37,6 +37,14 @@ public class Matrix {
             }
         }
     }
+    public static Matrix multiplyElements(Matrix a, Matrix b) {
+        for (int i = 0; i < a.rows; i++) {
+            for (int j = 0; j < a.cols; j++) {
+                a.data[i][j] *= b.data[i][j];
+            }
+        }
+        return a;
+    }
 
     public static Matrix multiply(Matrix a, Matrix b) {
         if (a.cols != b.rows) {
@@ -140,6 +148,16 @@ public class Matrix {
         return Stream.of(m.getData())
                 .flatMapToDouble(Arrays::stream)
                 .toArray();
+    }
+
+    public static Matrix derivative(Matrix m) {
+        Matrix result = new Matrix(m.rows, m.cols);
+        for (int i = 0; i < result.rows; i ++) {
+            for (int j = 0; j < result.cols; j++) {
+                result.data[i][j] = m.data[i][j] * (1 - m.data[i][j]);
+            }
+        }
+        return result;
     }
 
     public static void print(Matrix m) {

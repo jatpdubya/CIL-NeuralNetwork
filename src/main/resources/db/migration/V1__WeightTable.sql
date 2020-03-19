@@ -1,0 +1,4 @@
+CREATE TABLE weight (
+    id UUID NOT NULL PRIMARY KEY,
+    val VARCHAR(100) NOT NULL
+);
