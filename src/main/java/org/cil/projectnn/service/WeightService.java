@@ -16,7 +16,7 @@ public class WeightService {
     private final WeightDAO weightDao;
 
     @Autowired
-    public WeightService(@Qualifier("dummyDB")WeightDAO weightDao) {
+    public WeightService(@Qualifier("localDAO")WeightDAO weightDao) {
         this.weightDao = weightDao;
     }
 

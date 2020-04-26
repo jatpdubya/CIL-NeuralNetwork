@@ -1,6 +1,7 @@
 package org.cil.projectnn.dao;
 
 import org.cil.projectnn.model.Weight;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -8,8 +9,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository("dummyDB")
-public class DummyAccessService implements WeightDAO {
+@Repository("localDAO")
+
+public class LocalAccessService implements WeightDAO {
 
     private static List<Weight> DB = new ArrayList<>();
 

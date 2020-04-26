@@ -15,7 +15,7 @@ public class ProjectnnApplication {
 
 		SpringApplication.run(ProjectnnApplication.class, args);
 
-		NeuralNetwork nn = new NeuralNetwork(121, 20, 10);
+		NeuralNetwork nn = new NeuralNetwork("121", "20", "10");
 		final int iterations = 1000;
 
 		// Hard coded training set of 10 letters

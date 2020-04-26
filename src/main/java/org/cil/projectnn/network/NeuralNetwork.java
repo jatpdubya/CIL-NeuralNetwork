@@ -1,26 +1,22 @@
 package org.cil.projectnn.network;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class NeuralNetwork {
 
     private final Matrix[] weights, bias;
     private final double lr;
 
-    public NeuralNetwork(int input, int hidden, int output) {
+    public NeuralNetwork(String input, String hidden, String output) {
         this.lr = .25;
         this.weights = new Matrix[2];
         this.bias = new Matrix[2];
 
-        this.weights[0] = new Matrix(hidden, input);
-        this.weights[1] = new Matrix(output, hidden);
+        this.weights[0] = new Matrix( Integer.parseInt(hidden), Integer.parseInt(input));
+        this.weights[1] = new Matrix( Integer.parseInt(output), Integer.parseInt(hidden));
         for (Matrix m : weights) {
             m.randomize();
         }
-        this.bias[0] = new Matrix(hidden, 1);
-        this.bias[1] = new Matrix(output, 1);
+        this.bias[0] = new Matrix(Integer.parseInt(hidden), 1);
+        this.bias[1] = new Matrix(Integer.parseInt(output), 1);
         this.bias[0].randomize();
         this.bias[1].randomize();
     }
@@ -28,6 +24,7 @@ public class NeuralNetwork {
     public void train(double[] inputs, double[] targets) {
         // Convert the targets to a matrix opject for later
         Matrix target = Matrix.toMatrix(targets);
+
         // Feed the inputs into the network using the first weights matrix
         Matrix input = Matrix.toMatrix(inputs);
         Matrix hidden = Matrix.multiply(this.weights[0], input);

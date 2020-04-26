@@ -1,7 +1,7 @@
 app:
   datasource:
-    jdbc-url: jdbc:postgresql://localhost:5432/cilnndb
-    username: postgres
-    password: password
-    pool-size: 30
+    jdbc-url: jdbc:postgresql://ec2-3-91-112-166.compute-1.amazonaws.com:5432/d6arhla3evhu02
+    username: icdklgfkvymfth
+    password: 191e83bf26e9f71e75a47ba98bffdf32388b58c3beb3a1856659148130370ea8
+    pool-size: 20
 
